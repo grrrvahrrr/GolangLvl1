@@ -12,9 +12,7 @@ import (
 
 func sorting(sliceToSort []int) {
 	for i := 1; i < len(sliceToSort); i++ {
-
 		j := i
-
 		for j > 0 {
 			if sliceToSort[j-1] > sliceToSort[j] {
 				sliceToSort[j-1], sliceToSort[j] = sliceToSort[j], sliceToSort[j-1]
@@ -22,7 +20,6 @@ func sorting(sliceToSort []int) {
 			j -= 1
 		}
 	}
-
 	fmt.Println(`Your numbers are sorted: `, sliceToSort)
 }
 
@@ -36,12 +33,10 @@ func main() {
 		numString := scanner.Text()
 		if len(numString) != 0 {
 			numStringSlice := strings.Split(numString, " ")
-
 			length := len(numStringSlice)
 			var toSort []int
 
 			for i := 0; i < length; i++ {
-
 				numToAdd, err := strconv.Atoi(numStringSlice[i])
 				toSort = append(toSort, numToAdd)
 
@@ -60,5 +55,4 @@ func main() {
 	if scanner.Err() != nil {
 		fmt.Println("Error: ", scanner.Err())
 	}
-
 }
