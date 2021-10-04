@@ -3,75 +3,62 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
 )
 
-func main() {
-
-	fmt.Println(`Please, enter number of positive integers to sort (more than 1)`)
-
-	var length int
-
-	_, err := fmt.Scan(&length)
-
-	if err != nil || length <= 1 {
-		fmt.Println(`Try again, something went wrong..`)
-		os.Exit(1)
-	}
-
-	fmt.Println(`Please, input integers divided by "space"`)
-
-	toSort := make([]int, length)
-
-	if err != nil {
-		fmt.Println(`Try again, something went wrong..`)
-		os.Exit(1)
-	}
-
-	for i := 0; i < length; i++ {
-		_, err = fmt.Scan(&toSort[i])
-
-		if err != nil {
-			fmt.Println(`Try again, something went wrong..`)
-			os.Exit(1)
-		}
-
-	}
-
-	for i := 1; i < length; i++ {
+func sorting(sliceToSort []int) {
+	for i := 1; i < len(sliceToSort); i++ {
 
 		j := i
 
 		for j > 0 {
-			if toSort[j-1] > toSort[j] {
-				toSort[j-1], toSort[j] = toSort[j], toSort[j-1]
+			if sliceToSort[j-1] > sliceToSort[j] {
+				sliceToSort[j-1], sliceToSort[j] = sliceToSort[j], sliceToSort[j-1]
 			}
 			j -= 1
 		}
 	}
-	/*
-		val := toSort[i]
 
-		if i == 0 && toSort[i] > toSort[i+1] {
-			toSort = append(toSort[:0], toSort[i+1:]...)
-			toSort = append(toSort, val)
+	fmt.Println(`Your numbers are sorted: `, sliceToSort)
+}
 
-		} else if i == 0 && toSort[i] < toSort[i+1] {
-			continue
+func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+	for {
+		fmt.Print(`Enter integer numbers divided by "Space": `)
 
-		} else if i == length-1 && toSort[i] < toSort[i-1] {
-			toSort = toSort[:length-1]
-			toSort = append([]int{val}, toSort...)
+		scanner.Scan()
 
-		} else if i == length-1 && toSort[i] > toSort[i-1] {
-			continue
+		numString := scanner.Text()
+		if len(numString) != 0 {
+			numStringSlice := strings.Split(numString, " ")
 
-		} else if toSort[i] < toSort[i-1] || toSort[i] > toSort[i+1] {
-			toSort = append(toSort[:i], toSort[i+1:]...)
-			toSort = append(toSort, val)
-		}*/
+			length := len(numStringSlice)
+			var toSort []int
 
-	fmt.Println(`Your numbers are sorted: `, toSort)
+			for i := 0; i < length; i++ {
+
+				numToAdd, err := strconv.Atoi(numStringSlice[i])
+				toSort = append(toSort, numToAdd)
+
+				if err != nil {
+					fmt.Println(`Try again, something went wrong..`)
+					os.Exit(1)
+				}
+			}
+			sorting(toSort)
+			break
+		} else {
+			break
+		}
+	}
+
+	if scanner.Err() != nil {
+		fmt.Println("Error: ", scanner.Err())
+	}
 
 }
