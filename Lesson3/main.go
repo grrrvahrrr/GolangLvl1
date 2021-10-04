@@ -17,15 +17,11 @@ const (
 	Prime          = "prime" //Get prime numbers upto this point
 )
 
-var number1, number2 float64
-var err error
-
-func twoNumberOperation() (float64, float64, error) {
+func twoNumberOperation() (number1 float64, number2 float64, err error) {
 
 	fmt.Println(`Input two numbers, please (divided by space)`)
 
 	_, err = fmt.Scanf("%f %f", &number1, &number2)
-
 	if err != nil {
 		fmt.Println(`Try again, something went wrong..`)
 		os.Exit(1)
@@ -35,12 +31,11 @@ func twoNumberOperation() (float64, float64, error) {
 
 }
 
-func oneNumberOperation() (float64, error) {
+func oneNumberOperation() (number1 float64, err error) {
 
 	fmt.Println(`Input a number`)
 
 	_, err = fmt.Scanf("%f", &number1)
-
 	if err != nil {
 		fmt.Println(`Try again, something went wrong..`)
 		os.Exit(1)
@@ -51,18 +46,17 @@ func oneNumberOperation() (float64, error) {
 
 func main() {
 
+	var operation string
+	var result float64
+	var number1, number2 float64
+
 	fmt.Println(`Choose operation: "+" for Addition, "-" for Subtraction, "*" for Multiplication, "/" for Division, "sqr" for Squared, "root" for Square root, "log" for Logarithm, "prime" to get prime numbers up to input`)
 
-	var operation string
-
-	_, err = fmt.Scan(&operation)
-
+	_, err := fmt.Scan(&operation)
 	if err != nil {
 		fmt.Println(`Try again, something went wrong..`)
 		os.Exit(1)
 	}
-
-	var result float64
 
 	switch operation {
 	case Addition:
@@ -125,7 +119,6 @@ func main() {
 		fmt.Println(`Input a number`)
 
 		_, err = fmt.Scanf("%d", &mbPrime)
-
 		if err != nil {
 			fmt.Println(`Try again, something went wrong..`)
 			os.Exit(1)
@@ -137,6 +130,9 @@ func main() {
 			for j = 2; j < i; j++ {
 				if i%j == 0 {
 					isPrime = false
+					break
+				}
+				if j > mbPrime/2 {
 					break
 				}
 			}
