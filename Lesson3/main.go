@@ -18,30 +18,15 @@ const (
 )
 
 func twoNumberOperation() (number1 float64, number2 float64, err error) {
-
 	fmt.Println(`Input two numbers, please (divided by space)`)
-
 	_, err = fmt.Scanf("%f %f", &number1, &number2)
-	if err != nil {
-		fmt.Println(`Try again, something went wrong..`)
-		os.Exit(1)
-	}
-
-	return number1, number2, nil
-
+	return
 }
 
 func oneNumberOperation() (number1 float64, err error) {
-
 	fmt.Println(`Input a number`)
-
 	_, err = fmt.Scanf("%f", &number1)
-	if err != nil {
-		fmt.Println(`Try again, something went wrong..`)
-		os.Exit(1)
-	}
-
-	return number1, nil
+	return
 }
 
 func main() {
@@ -59,27 +44,40 @@ func main() {
 	}
 
 	switch operation {
-	case Addition:
-		twoNumberOperation()
 
+	case Addition:
+		number1, number2, err = twoNumberOperation()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
 		result = number1 + number2
 		fmt.Printf("Result: %.2f\n", result)
 
 	case Subtraction:
-		twoNumberOperation()
-
+		number1, number2, err = twoNumberOperation()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
 		result = number1 - number2
 		fmt.Printf("Result: %.2f\n", result)
 
 	case Multiplication:
-		twoNumberOperation()
-
+		number1, number2, err = twoNumberOperation()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
 		result = number1 * number2
 		fmt.Printf("Result: %.2f\n", result)
 
 	case Division:
-		twoNumberOperation()
-
+		number1, number2, err = twoNumberOperation()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
 		if number1 != 0 && number2 != 0 {
 			result = number1 / number2
 			fmt.Printf("Result: %.2f\n", result)
@@ -88,20 +86,29 @@ func main() {
 		}
 
 	case Squared:
-		oneNumberOperation()
-
+		number1, err = oneNumberOperation()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
 		result = number1 * number1
 		fmt.Printf("Result: %.2f\n", result)
 
 	case SqrRoot:
-		oneNumberOperation()
-
+		number1, err = oneNumberOperation()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
 		result = math.Sqrt(number1)
 		fmt.Printf("Result: %.2f\n", result)
 
 	case Logarithm:
-		oneNumberOperation()
-
+		number1, err = oneNumberOperation()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
 		if number1 > 0 {
 			result = math.Log(number1)
 			fmt.Printf("Result: %.2f\n", result)
@@ -110,11 +117,8 @@ func main() {
 		}
 
 	case Prime:
-
 		var mbPrime int
 		var isPrime bool
-		var i int
-		var j int
 
 		fmt.Println(`Input a number`)
 
@@ -124,21 +128,22 @@ func main() {
 			os.Exit(1)
 		}
 
-		for i = 1; i < mbPrime; i++ {
-			isPrime = true
+		fmt.Println("Prime Number: 1")
+		fmt.Println("Prime Number: 2")
 
-			for j = 2; j < i; j++ {
-				if i%j == 0 {
+		num := 3
+		for num <= mbPrime {
+			isPrime = true
+			for i := 2; i <= int(math.Sqrt(float64(num))); i++ {
+				if num%i == 0 {
 					isPrime = false
-					break
-				}
-				if j > mbPrime/2 {
 					break
 				}
 			}
 			if isPrime {
-				fmt.Printf("Prime Number: %d\n", i)
+				fmt.Printf("Prime Number: %d\n", num)
 			}
+			num++
 		}
 
 	default:
