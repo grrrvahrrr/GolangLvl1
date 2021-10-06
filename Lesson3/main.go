@@ -120,7 +120,7 @@ func main() {
 		var mbPrime int
 		var isPrime bool
 
-		fmt.Println(`Input a number`)
+		fmt.Println(`Input a number bigger than "3"`)
 
 		_, err = fmt.Scanf("%d", &mbPrime)
 		if err != nil {
@@ -128,22 +128,27 @@ func main() {
 			os.Exit(1)
 		}
 
-		fmt.Println("Prime Number: 1")
-		fmt.Println("Prime Number: 2")
+		if mbPrime < 3 {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		} else {
+			fmt.Println("Prime Number: 1")
+			fmt.Println("Prime Number: 2")
 
-		num := 3
-		for num <= mbPrime {
-			isPrime = true
-			for i := 2; i <= int(math.Sqrt(float64(num))); i++ {
-				if num%i == 0 {
-					isPrime = false
-					break
+			num := 3
+			for num <= mbPrime {
+				isPrime = true
+				for i := 2; i <= int(math.Sqrt(float64(num))); i++ {
+					if num%i == 0 {
+						isPrime = false
+						break
+					}
 				}
+				if isPrime {
+					fmt.Printf("Prime Number: %d\n", num)
+				}
+				num++
 			}
-			if isPrime {
-				fmt.Printf("Prime Number: %d\n", num)
-			}
-			num++
 		}
 
 	default:
