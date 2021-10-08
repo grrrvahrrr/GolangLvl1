@@ -47,6 +47,7 @@ func main() {
 Программа написанная выше работает без ошибки и выдает результаты всех умножений.
 Если пойти глубже то наверное можно и fmt.Println(***i****j) написать и это тоже умножиться, но это уже почти не читаемо.
 */
+/*
 package main
 
 import (
@@ -79,5 +80,155 @@ func main() {
 	numStruct := Digits{string(number[0]), string(number[1]), string(number[2])}
 
 	numStruct.PrintNums()
+}
+*/
 
+package main
+
+import (
+	"fmt"
+	"math"
+	"os"
+)
+
+const (
+	Addition       = "+"     //adding numbers
+	Subtraction    = "-"     //subtracting numbers
+	Multiplication = "*"     //multiplying numbers
+	Division       = "/"     //divising numbers
+	Squared        = "sqr"   //squared numbers
+	SqrRoot        = "root"  //square root
+	Logarithm      = "log"   //Logarithm of a number
+	Prime          = "prime" //Get prime numbers upto this point
+)
+
+//Type Declaration
+type TwoNums struct {
+	num1, num2 float64
+}
+type OneNum struct {
+	num1 float64
+}
+
+//Two Number Functions
+func (nums *TwoNums) ScanNums() (err error) {
+	fmt.Println(`Input two numbers, please (divided by space)`)
+	_, err = fmt.Scanf("%f %f", &nums.num1, &nums.num2)
+	return
+}
+
+func (nums *TwoNums) Addition() float64 {
+	return nums.num1 + nums.num2
+}
+
+func (nums *TwoNums) Subtraction() float64 {
+	return nums.num1 - nums.num2
+}
+
+func (nums *TwoNums) Multiplication() float64 {
+	return nums.num1 * nums.num2
+}
+
+func (nums *TwoNums) Division() float64 {
+	return nums.num1 / nums.num2
+}
+
+//One number functions
+func (num *OneNum) ScanNum() (err error) {
+	fmt.Println(`Input a number`)
+	_, err = fmt.Scanf("%f", &num.num1)
+	return
+}
+
+func (num *OneNum) Squared() float64 {
+	return num.num1 * num.num1
+}
+
+func (num *OneNum) Sqrt() float64 {
+	return math.Sqrt(num.num1)
+}
+
+func (num *OneNum) Log() float64 {
+	return math.Log(num.num1)
+}
+
+func main() {
+	var operation string
+
+	fmt.Println(`Choose operation: "+" for Addition, "-" for Subtraction, "*" for Multiplication, "/" for Division, "sqr" for Squared, "root" for Square root, "log" for Logarithm, "prime" to get prime numbers up to input`)
+
+	_, err := fmt.Scan(&operation)
+	if err != nil {
+		fmt.Println(`Try again, something went wrong..`)
+		os.Exit(1)
+	}
+
+	switch operation {
+	case Addition:
+		twoNumsStruct := TwoNums{}
+		err = twoNumsStruct.ScanNums()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
+		fmt.Printf("Result: %.2f\n", twoNumsStruct.Addition())
+
+	case Subtraction:
+		twoNumsStruct := TwoNums{}
+		err = twoNumsStruct.ScanNums()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
+		fmt.Printf("Result: %.2f\n", twoNumsStruct.Subtraction())
+
+	case Multiplication:
+		twoNumsStruct := TwoNums{}
+		err = twoNumsStruct.ScanNums()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
+		fmt.Printf("Result: %.2f\n", twoNumsStruct.Multiplication())
+
+	case Division:
+		twoNumsStruct := TwoNums{}
+		err = twoNumsStruct.ScanNums()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
+		fmt.Printf("Result: %.2f\n", twoNumsStruct.Division())
+
+	case Squared:
+		oneNumStruct := OneNum{}
+		err = oneNumStruct.ScanNum()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
+		fmt.Printf("Result: %.2f\n", oneNumStruct.Squared())
+
+	case SqrRoot:
+		oneNumStruct := OneNum{}
+		err = oneNumStruct.ScanNum()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
+		fmt.Printf("Result: %.2f\n", oneNumStruct.Sqrt())
+
+	case Logarithm:
+		oneNumStruct := OneNum{}
+		err = oneNumStruct.ScanNum()
+		if err != nil {
+			fmt.Println(`Try again, something went wrong..`)
+			os.Exit(1)
+		}
+		fmt.Printf("Result: %.2f\n", oneNumStruct.Log())
+
+	default:
+		fmt.Println(`Try again, something went wrong..`)
+		os.Exit(1)
+	}
 }
