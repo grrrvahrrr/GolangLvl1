@@ -1,5 +1,5 @@
 //Lesson 5 Homework
-/*
+
 package main
 
 import (
@@ -7,43 +7,15 @@ import (
 	"os"
 )
 
-func fibb(x uint) uint {
-	if x <= 0 {
+func fibbRecursion(x uint) uint {
+	if x == 0 {
 		return 0
 	}
 	if x == 1 {
 		return 1
 	}
-	return fibb(x-1) + fibb(x-2)
+	return fibbRecursion(x-1) + fibbRecursion(x-2)
 }
-
-
-func main() {
-	var num uint
-
-	fmt.Println(`Please input a number greater than "0"`)
-
-	_, err := fmt.Scan(&num)
-	if err != nil {
-		fmt.Println(`Try again, something went wrong..`)
-		os.Exit(1)
-	}
-
-	if num < 0 {
-		fmt.Println(`Try again, something went wrong..`)
-		os.Exit(1)
-	}
-
-	fmt.Println(fibb(num))
-}
-*/
-
-package main
-
-import (
-	"fmt"
-	"os"
-)
 
 func fibbMapCalc(x int) int {
 	fibbMap := make(map[int]int, x+1)
@@ -64,6 +36,24 @@ func fibbMapCalc(x int) int {
 	return fibbMap[x]
 }
 
+func fibbMapRecursion(numMap map[int]int, x int) (map[int]int, int) {
+
+	numMap[0] = 0
+	numMap[1] = 1
+	length := len(numMap)
+
+	numMap[length] = numMap[length-1] + numMap[length-2]
+
+	if len(numMap) == x+1 {
+		return numMap, x
+	}
+	if x == 1 {
+		return numMap, x
+	}
+
+	return fibbMapRecursion(numMap, x)
+}
+
 func main() {
 	var num int
 
@@ -75,10 +65,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	if num < 0 {
+	if num <= 0 {
 		fmt.Println(`Try again, something went wrong..`)
 		os.Exit(1)
 	}
 
-	fmt.Println(fibbMapCalc(num))
+	fibbMap := make(map[int]int, num+1)
+
+	fibbMapRecursion(fibbMap, num)
+
+	fmt.Println(fibbMap)
+	fmt.Println(fibbMap[num])
 }
