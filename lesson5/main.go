@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func fibbRecursion(x uint) uint {
+func fibbRecursion(x int) int {
 	if x == 0 {
 		return 0
 	}
@@ -40,6 +40,7 @@ func fibbMapRecursion(numMap map[int]int, x int) (map[int]int, int) {
 
 	numMap[0] = 0
 	numMap[1] = 1
+
 	length := len(numMap)
 
 	numMap[length] = numMap[length-1] + numMap[length-2]
@@ -52,6 +53,18 @@ func fibbMapRecursion(numMap map[int]int, x int) (map[int]int, int) {
 	}
 
 	return fibbMapRecursion(numMap, x)
+}
+
+func fibbMapRecursion2(numMap map[int]int) map[int]int {
+	length := len(numMap)
+	numMap[length] = numMap[length-1] + numMap[length-2]
+
+	fmt.Println(numMap)
+
+	if length == numMap[0] {
+		return numMap
+	}
+	return fibbMapRecursion2(numMap)
 }
 
 func main() {
@@ -70,10 +83,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	fibbMap := make(map[int]int, num+1)
+	fibbMap := make(map[int]int, num)
+	fibbMap[0] = num
+	fibbMap[1] = 1
+	fibbMap[2] = 1
 
-	fibbMapRecursion(fibbMap, num)
-
-	fmt.Println(fibbMap)
+	fibbMapRecursion2(fibbMap)
 	fmt.Println(fibbMap[num])
+
 }
