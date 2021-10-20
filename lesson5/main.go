@@ -64,6 +64,10 @@ func fibbMapRecursion2(numMap map[int]int) map[int]int {
 	if length == numMap[0] {
 		return numMap
 	}
+	if numMap[0] == 1 || numMap[0] == 2 {
+		return numMap
+	}
+
 	return fibbMapRecursion2(numMap)
 }
 
