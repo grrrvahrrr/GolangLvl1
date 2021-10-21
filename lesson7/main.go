@@ -49,24 +49,28 @@ func Num1Scan() (a float64, err error) {
 }
 
 //Do functions
-type Operation interface {
-	Do() (float64, error)
+type Operation2 interface {
+	Do2(num1 float64, num2 float64) float64
 }
 
-func (a *Addition) Do() float64 {
-	return a.num1 + a.num2
+type Operation1 interface {
+	Do1(num1 float64) float64
 }
 
-func (s *Subtraction) Do() float64 {
-	return s.num1 - s.num2
+func (a *Addition) Do2(num1 float64, num2 float64) float64 {
+	return num1 + num2
 }
 
-func (m *Multiplication) Do() float64 {
-	return m.num1 * m.num2
+func (s *Subtraction) Do2(num1 float64, num2 float64) float64 {
+	return num1 - num2
 }
 
-func (s *Square) Do() float64 {
-	return s.num1 * s.num1
+func (m *Multiplication) Do2(num1 float64, num2 float64) float64 {
+	return num1 * num2
+}
+
+func (s *Square) Do1(num1 float64) float64 {
+	return num1 * num1
 }
 
 func main() {
@@ -77,39 +81,40 @@ func main() {
 
 	switch operation {
 	case Add:
-		var a Addition
-		a.num1, a.num2, err = Num2Scan()
+		var i Operation2 = &Addition{}
+		num1, num2, err := Num2Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", a.Do())
+		fmt.Printf("Result: %.2f\n", i.Do2(num1, num2))
 
 	case Sub:
-		var s Subtraction
-		s.num1, s.num2, err = Num2Scan()
+		var i Operation2 = &Subtraction{}
+		num1, num2, err := Num2Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", s.Do())
+		fmt.Printf("Result: %.2f\n", i.Do2(num1, num2))
+
 	case Multi:
-		var m Multiplication
-		m.num1, m.num2, err = Num2Scan()
+		var i Operation2 = &Multiplication{}
+		num1, num2, err := Num2Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", m.Do())
+		fmt.Printf("Result: %.2f\n", i.Do2(num1, num2))
 
 	case Squared:
-		var s Square
-		s.num1, err = Num1Scan()
+		var i Operation1 = &Square{}
+		num1, err := Num1Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", s.Do())
+		fmt.Printf("Result: %.2f\n", i.Do1(num1))
 
 	default:
 		err = Failure(`Try again, something went wrong.. Invalid Operation`)
