@@ -49,12 +49,22 @@ func Num1Scan() (a float64, err error) {
 }
 
 //Do functions
-type Operation2 interface {
-	Do2(num1 float64, num2 float64) float64
+func Do2nums(i interface{}, num1 float64, num2 float64) {
+	switch v := i.(type) {
+	case *Addition:
+		fmt.Printf("Result: %.2f\n", v.Do2(num1, num2))
+	case *Subtraction:
+		fmt.Printf("Result: %.2f\n", v.Do2(num1, num2))
+	case *Multiplication:
+		fmt.Printf("Result: %.2f\n", v.Do2(num1, num2))
+	}
 }
 
-type Operation1 interface {
-	Do1(num1 float64) float64
+func Do1num(i interface{}, num1 float64) {
+	switch v := i.(type) {
+	case *Square:
+		fmt.Printf("Result: %.2f\n", v.Do1(num1))
+	}
 }
 
 func (a *Addition) Do2(num1 float64, num2 float64) float64 {
@@ -74,6 +84,7 @@ func (s *Square) Do1(num1 float64) float64 {
 }
 
 func main() {
+
 	fmt.Println(`Choose operation: "+" for Addition, "-" for Subtraction, "*" for Multiplication, "sqr" for squared value`)
 
 	var operation string
@@ -81,40 +92,36 @@ func main() {
 
 	switch operation {
 	case Add:
-		var i Operation2 = &Addition{}
 		num1, num2, err := Num2Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", i.Do2(num1, num2))
+		Do2nums(&Addition{}, num1, num2)
 
 	case Sub:
-		var i Operation2 = &Subtraction{}
 		num1, num2, err := Num2Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", i.Do2(num1, num2))
+		Do2nums(&Subtraction{}, num1, num2)
 
 	case Multi:
-		var i Operation2 = &Multiplication{}
 		num1, num2, err := Num2Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", i.Do2(num1, num2))
+		Do2nums(&Multiplication{}, num1, num2)
 
 	case Squared:
-		var i Operation1 = &Square{}
 		num1, err := Num1Scan()
 		if err != nil {
 			err = Failure(`Try again, something went wrong..`)
 			panic(err)
 		}
-		fmt.Printf("Result: %.2f\n", i.Do1(num1))
+		Do1num(&Square{}, num1)
 
 	default:
 		err = Failure(`Try again, something went wrong.. Invalid Operation`)
