@@ -4,7 +4,6 @@ import (
 	"GolangLvl1/lesson8/config"
 	"flag"
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -28,25 +27,16 @@ func Goodbyer(names []string) {
 }
 
 func main() {
-
 	flag.Parse()
+	var c config.Configuration
+	c.LoadConfig(*flagName, *flagMode)
 
-	config.ConfigFromFile("config.env")
-
-	mode := os.Getenv("MODE")
-	name := os.Getenv("NAME")
-	if *flagMode == "" {
-		*flagMode = mode
-	}
-	if *flagName == "" {
-		*flagName = name
+	if strings.Contains("hello", c.MODE) {
+		Greeter(c.ParseNames())
 	}
 
-	if strings.Contains("hello", *flagMode) {
-		Greeter(config.ParseNames(*flagName))
+	if strings.Contains("gb", c.MODE) {
+		Goodbyer(c.ParseNames())
 	}
 
-	if strings.Contains("gb", *flagMode) {
-		Goodbyer(config.ParseNames(*flagName))
-	}
 }
