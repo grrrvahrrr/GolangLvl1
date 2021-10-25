@@ -1,3 +1,5 @@
+//Lesson 8 Homework
+
 package config
 
 import (
@@ -20,10 +22,10 @@ func (c *Configuration) ParseNames() []string {
 	return splitted
 }
 
-func (c *Configuration) LoadConfig(name string, mode string) {
+func (c *Configuration) LoadConfig(name string, mode string) error {
 	err := godotenv.Load("config_example.env")
 	if err != nil {
-		panic(err)
+		return err
 	}
 	if name == "" {
 		c.NAME = os.Getenv("NAME")
@@ -35,5 +37,5 @@ func (c *Configuration) LoadConfig(name string, mode string) {
 	} else {
 		c.MODE = mode
 	}
-	return
+	return nil
 }
