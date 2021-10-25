@@ -1,3 +1,4 @@
+//Lesson 9 Homework
 package main
 
 import (
@@ -28,53 +29,30 @@ func Goodbyer(names []string) {
 }
 
 func main() {
-
 	flag.Parse()
+	var c config.Configuration
 
-	fmt.Println(`Do you want to read from json/yaml file? "yes" or "no"`)
-
-	var readfrom string
-	if _, err := fmt.Scan(&readfrom); err != nil {
-		fmt.Printf("Invalid answer: %v", err)
+	fmt.Println(`Please input config file name or "d" for default`)
+	var filename string
+	if _, err := fmt.Scan(&filename); err != nil {
+		fmt.Printf("Invalid filename: %v", err)
 		os.Exit(1)
 	}
 
-	switch readfrom {
-	case "yes":
-		fmt.Println(`Please input file name`)
-		var filename string
-		if _, err := fmt.Scan(&filename); err != nil {
-			fmt.Printf("Invalid filename: %v", err)
+	if filename != "d" {
+		err := c.ConfigFromJsonYaml(filename)
+		if err != nil {
+			fmt.Printf("Invalid file: %v \n", err)
 			os.Exit(1)
 		}
-		config.ConfigFromJsonYaml(filename)
-
-		*flagName = config.Configur.Name
-		*flagMode = config.Configur.Mode
-
-	case "no":
-		config.ConfigFromEnvFile("config.env")
-
-		mode := os.Getenv("MODE")
-		name := os.Getenv("NAME")
-
-		if *flagMode == "" {
-			*flagMode = mode
-		}
-		if *flagName == "" {
-			*flagName = name
-		}
-
-	default:
-		fmt.Println("Invalid answer")
-		os.Exit(1)
+	} else if filename == "d" {
+		c.LoadConfig(*flagName, *flagMode)
 	}
 
-	if strings.Contains("hello", *flagMode) {
-		Greeter(config.ParseNames(*flagName))
+	if strings.Contains("hello", c.MODE) {
+		Greeter(c.ParseNames())
 	}
-
-	if strings.Contains("gb", *flagMode) {
-		Goodbyer(config.ParseNames(*flagName))
+	if strings.Contains("gb", c.MODE) {
+		Goodbyer(c.ParseNames())
 	}
 }

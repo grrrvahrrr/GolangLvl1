@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"strings"
 
@@ -10,49 +9,51 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func ParseNames(raw string) []string {
-	splitted := strings.Split(raw, ",")
+type Configuration struct {
+	NAME string `yaml:"name" json:"name"`
+	MODE string `yaml:"mode" json:"mode"`
+}
+
+func (c *Configuration) ParseNames() []string {
+	splitted := strings.Split(c.NAME, ",")
 	for i, s := range splitted {
 		splitted[i] = strings.TrimSpace(s)
 	}
 	return splitted
 }
 
-func ConfigFromEnvFile(file string) {
-	err := godotenv.Load(file)
+func (c *Configuration) LoadConfig(name string, mode string) error {
+	err := godotenv.Load("config_example.env")
 	if err != nil {
-		panic(err)
+		return err
 	}
-	return
+	if name == "" {
+		c.NAME = os.Getenv("NAME")
+	} else {
+		c.NAME = name
+	}
+	if mode == "" {
+		c.MODE = os.Getenv("MODE")
+	} else {
+		c.MODE = mode
+	}
+	return nil
 }
 
-type Configuration struct {
-	Name string `yaml:"name" json:"name"`
-	Mode string `yaml:"mode" json:"mode"`
-}
-
-var Configur Configuration
-
-func ConfigFromJsonYaml(file string) {
-
+func (c *Configuration) ConfigFromJsonYaml(file string) error {
 	contents, err := os.ReadFile(file)
 	if err != nil {
-		fmt.Printf("Can not open file: %v", err)
-		os.Exit(1)
+		return err
 	}
-
 	if strings.Contains(file, ".json") {
-		if err = json.Unmarshal(contents, &Configur); err != nil {
-			fmt.Printf("Invalid json: %v", err)
-			os.Exit(1)
+		if err = json.Unmarshal(contents, &c); err != nil {
+			return err
 		}
 	}
-
 	if strings.Contains(file, ".yaml") {
-		if err = yaml.Unmarshal(contents, &Configur); err != nil {
-			fmt.Printf("Invalid json: %v", err)
-			os.Exit(1)
+		if err = yaml.Unmarshal(contents, &c); err != nil {
+			return err
 		}
 	}
-
+	return nil
 }
