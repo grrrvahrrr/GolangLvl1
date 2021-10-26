@@ -2,14 +2,8 @@ package main
 
 import (
 	"GolangLvl1/lesson8/config"
-	"flag"
 	"fmt"
 	"strings"
-)
-
-var (
-	flagName = flag.String("name", "", "names of people to greet")
-	flagMode = flag.String("mode", "", "hello or goodbye")
 )
 
 func Greeter(names []string) {
@@ -27,16 +21,17 @@ func Goodbyer(names []string) {
 }
 
 func main() {
-	flag.Parse()
-	var c config.Configuration
-	c.LoadConfig(*flagName, *flagMode)
-
-	if strings.Contains("hello", c.MODE) {
-		Greeter(c.ParseNames())
+	cfg, err := config.Load("config_example.env")
+	if err != nil {
+		fmt.Printf("Couldn't load config %s", err)
 	}
 
-	if strings.Contains("gb", c.MODE) {
-		Goodbyer(c.ParseNames())
+	if strings.Contains("hello", cfg.Mode) {
+		Greeter(cfg.ParseNames())
+	}
+
+	if strings.Contains("gb", cfg.Mode) {
+		Goodbyer(cfg.ParseNames())
 	}
 
 }

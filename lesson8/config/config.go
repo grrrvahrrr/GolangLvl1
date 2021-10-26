@@ -3,6 +3,7 @@
 package config
 
 import (
+	"flag"
 	"os"
 	"strings"
 
@@ -10,32 +11,47 @@ import (
 )
 
 type Configuration struct {
-	NAME string
-	MODE string
+	Name string
+	Mode string
 }
 
+var (
+	FlagName = flag.String("name", "", "names of people to greet")
+	FlagMode = flag.String("mode", "", "hello or goodbye")
+)
+
 func (c *Configuration) ParseNames() []string {
-	splitted := strings.Split(c.NAME, ",")
+	splitted := strings.Split(c.Name, ",")
 	for i, s := range splitted {
 		splitted[i] = strings.TrimSpace(s)
 	}
 	return splitted
 }
 
-func (c *Configuration) LoadConfig(name string, mode string) error {
-	err := godotenv.Load("config_example.env")
+func (c *Configuration) LoadConfig(file string) error {
+	flag.Parse()
+	err := godotenv.Load(file)
 	if err != nil {
 		return err
 	}
-	if name == "" {
-		c.NAME = os.Getenv("NAME")
+	if *FlagName == "" {
+		c.Name = os.Getenv("NAME")
 	} else {
-		c.NAME = name
+		c.Name = *FlagName
 	}
-	if mode == "" {
-		c.MODE = os.Getenv("MODE")
+	if *FlagMode == "" {
+		c.Mode = os.Getenv("MODE")
 	} else {
-		c.MODE = mode
+		c.Mode = *FlagMode
 	}
 	return nil
+}
+
+func Load(file string) (Configuration, error) {
+	var c Configuration
+	err := c.LoadConfig(file)
+	if err != nil {
+		return c, err
+	}
+	return c, nil
 }
